@@ -1,5 +1,4 @@
 [app]
-
 title = My Kivy App
 package.name = mykivyapp
 package.domain = org.test
@@ -9,15 +8,11 @@ version = 0.1
 requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
-
 android.api = 31
 android.minapi = 21
 android.sdk = 31
-
-# 怒られないように、最小要件を満たす NDK r25b を指定します
 android.ndk = 25b
 android.ndk_api = 31
-
 android.accept_sdk_license = True
 android.python_version = 3.11
 
