@@ -33,6 +33,8 @@ jobs:
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
+        # 仮想環境内でのpipの競合を防ぐため、古いpipを強制する環境変数
+        export PIP_NO_BUILD_ISOLATION=false
         buildozer -v --debug android debug
 
     - name: Upload artifacts
