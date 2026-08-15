@@ -33,6 +33,8 @@ jobs:
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
+        # キャッシュをクリアしてクリーンな状態でビルドをやり直す
+        buildozer clean
         buildozer -v --debug android debug
 
     - name: Upload artifacts
