@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
 
     - name: Setup Buildozer
       run: |
@@ -32,7 +32,6 @@ jobs:
 
     - name: Build with Buildozer
       run: |
-        # キャッシュのクリアと環境変数の強制再読み込みを意図したクリーンビルド設定
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
         buildozer android clean
         buildozer android debug
