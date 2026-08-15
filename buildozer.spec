@@ -15,7 +15,7 @@ source.dir = .
 # (list) Source files to include (let it empty to include all files)
 source.include_exts = py,png,jpg,kv,atlas
 
-# (list) Application versioning (adding version here)
+# (list) Application versioning
 version = 0.1
 
 # (list) Application requirements
@@ -50,6 +50,12 @@ android.uses_auto_backup = False
 
 # (str) The format in which an APK is released, can be 'apk' or 'aab'
 android.release_artifact = apk
+
+# (bool) Indicate whether the screen should stay on
+#android.wakelock = False
+
+# (str) Android SDK license acceptance (重要：ここでライセンスに自動同意します)
+android.accept_sdk_license = True
 
 
 [buildozer]
