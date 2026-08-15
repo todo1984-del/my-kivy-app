@@ -14,16 +14,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Get proxy and dependencies cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          .buildozer
-          ~/.gradle
-        key: buildozer-${{ hashFiles('buildozer.spec') }}
-        restore-keys: |
-          buildozer-
-
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -37,8 +27,8 @@ jobs:
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
-        # キャッシュや既存のビルドで中途半端に残っているlibffiのコンフィグをきれいに掃除
-        rm -rf .buildozer/android/platform/build-arm64-v8a_armeabi-v7a/build/other_builds/libffi/armeabi-v7a/libffi-* || true
+        # キャッシュ起因のトラブルを防ぐため .buildozer を完全にリセットしてクリーンビルドする
+        rm -rf .buildozer
         buildozer -v android debug
 
     - name: Upload artifacts
