@@ -28,11 +28,13 @@ jobs:
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
-        # エラーが起きても詳細なログを確実に残すための実行コマンド
-        buildozer -v --debug android debug || (echo "=== BUILD FAILED ===" && find .buildozer -name "*.log" -exec cat {} \;)
+        buildozer -v --debug android debug
 
-    - name: Upload artifacts
+    - name: Find and Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: package
-        path: bin/*.apk
+        name: my-app-apk
+        path: |
+          bin/*.apk
+          .buildozer/android/platform/build--arm64-v8a/dists/mykivyapp/bin/*.apk
+          bin/*
