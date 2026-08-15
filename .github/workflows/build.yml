@@ -14,10 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
+    - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.9'
 
     - name: Install dependencies
       run: |
@@ -26,15 +26,13 @@ jobs:
 
     - name: Setup Buildozer and Cython
       run: |
-        pip install --upgrade pip==24.0
+        pip install --upgrade pip
         pip install --upgrade setuptools
         pip install buildozer cython==0.29.36
 
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
-        # キャッシュをクリアしてクリーンな状態でビルドをやり直す
-        buildozer clean
         buildozer -v --debug android debug
 
     - name: Upload artifacts
