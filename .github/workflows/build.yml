@@ -28,8 +28,8 @@ jobs:
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
         rm -rf .buildozer
-        # ログレベルを最高（2）にして、どこでエラーが起きているのかを隠さず全て出力させる
-        buildozer -v --debug android debug
+        # 万が一失敗してもログの末尾にエラー原因をダイレクトに吐き出させる
+        buildozer -v --debug android debug || (echo "=== BUILD FAILED ===" && exit 1)
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
