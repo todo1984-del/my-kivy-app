@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-    jobs:
-  build:
-    runs-on: ubuntu-22.04   # ← ここを ubuntu-latest から変更する
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout code
