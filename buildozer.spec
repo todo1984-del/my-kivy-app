@@ -10,17 +10,17 @@ requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
 
-# 安定動作実績のあるAPI/SDK設定
 android.api = 31
 android.minapi = 21
 android.sdk = 31
-
-# 互換性が最も高い NDK r23b を指定します
 android.ndk = 23b
 android.ndk_api = 21
-
 android.accept_sdk_license = True
 android.python_version = 3.11
+
+# --- 追加：メモリ不足による強制終了を防ぐためのGradle設定 ---
+android.gradle_options = -Dorg.gradle.jvmargs="-Xmx1536m" -Dorg.gradle.workers.max=1
+# -------------------------------------------------------------
 
 [buildozer]
 log_level = 2
