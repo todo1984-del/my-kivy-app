@@ -18,7 +18,7 @@ source.include_exts = py,png,jpg,kv,atlas
 # (list) List of inclusions using pattern
 #source.include_patterns = assets/*.png,images/*.jpg
 
-# (list) Source files to exclude (let it empty to include all files)
+# (list) Source files to exclude (let it empty to exclude all files)
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let it empty to exclude all files)
@@ -60,6 +60,12 @@ android.min_api = 21
 
 # (str) Android NDK version to use
 android.ndk = 25b
+
+# (str) Android SDK version to use
+#android.sdk = 31
+
+# (str) android app build tools version
+android.build_tools_version = 33.0.2
 
 # (bool) Indicate if the application should be background service or not
 #android.service = False
