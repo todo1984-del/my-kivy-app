@@ -33,19 +33,27 @@ jobs:
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
-        
+
         # 古いキャッシュをクリア
         rm -rf .buildozer
-        
-        # ビルド実行前に、python-for-androidのビルドスクリプトから 'pip install -U pip' を消去するパッチを当てるためのバックグラウンド監視または事後パッチ
-        # まず一度デバッグ用にビルドを回し、自動取得された p4a のコード内の pip upgrade を置換する
-        
-        # あらかじめビルドを走らせて .buildozer 内に p4a をクローンさせる（失敗するので || true で受ける）
+
+        # あらかじめ一度ビルドを走らせて .buildozer 内に p4a をクローンさせる（失敗するので || true で受ける）
         buildozer --version || true
+
+        # SDKライセンスを強制的に承認させるファイルを作成するハック
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
         
-        # .buildozer 内に展開された python-for-android の build.py から問題の行を強制削除
-        find .buildozer -name "build.py" -type f -exec sed -i 's/pip install -U pip/echo "Skipped pip upgrade"/g' {} + || true
-        find ~/.buildozer -name "build.py" -type f -exec sed -i 's/pip install -U pip/echo "Skipped pip upgrade"/g' {} + || true
+        # 失敗するダミービルドを1回実行して android-sdk ディレクトリを生成させる
+        buildozer -v --debug android debug || true
+
+        # 生成された android-sdk に対して yes | sdkmanager --licenses を実行してライセンスを自動承認する
+        if [ -d "$HOME/.buildozer/android/platform/android-sdk/tools/bin" ]; then
+          yes | $HOME/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager --licenses || true
+        fi
+        if [ -d "$HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin" ]; then
+          yes | $HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        fi
 
         # 本番ビルド実行
         buildozer -v --debug android debug
