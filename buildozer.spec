@@ -18,10 +18,10 @@ source.include_exts = py,png,jpg,kv,atlas
 # (list) List of inclusions using pattern
 #source.include_patterns = assets/*.png,images/*.jpg
 
-# (list) Source files to exclude (let it empty to exclude all files)
+# (list) Source files to exclude (let it empty to include all files)
 #source.exclude_exts = spec
 
-# (list) List of directory to exclude (let it empty to exclude all files)
+# (list) List of directory to exclude (let it empty to include all files)
 #source.exclude_dirs = tests, bin
 
 # (list) List of exclusions using pattern
@@ -31,7 +31,7 @@ source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 
 # (list) Application requirements
-requirements = python3,kivy,pyjnius
+requirements = python3,kivy
 
 # (list) Custom source folders for requirements
 #requirements.source.dirname =
