@@ -58,12 +58,6 @@ android.api = 33
 # (int) Minimum API your APK will support.
 android.min_api = 21
 
-# (str) Android SDK version to use
-android.sdk = 33
-
-# (str) Android build tools version to use
-android.build_tools_version = 33.0.2
-
 # (str) Android NDK version to use
 #android.ndk = 25b
 
