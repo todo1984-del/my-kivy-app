@@ -31,7 +31,7 @@ source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 
 # (list) Application requirements
-requirements = python3,kivy
+requirements = python3,kivy==2.2.1
 
 # (list) Custom source folders for requirements
 #requirements.source.dirname =
