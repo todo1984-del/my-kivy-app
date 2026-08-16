@@ -28,13 +28,12 @@ jobs:
       run: |
         pip install --upgrade pip==24.0
         pip install --upgrade setuptools
-        pip install buildozer==1.5.0 cython==0.29.36
+        # バグを回避するため、最新の master 稼働が安定している buildozer と cython を指定
+        pip install --upgrade buildozer cython==0.29.36
 
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
-        
-        # コマンドラインから非対話モードでsdkmanagerのライセンスに自動同意させる環境変数を設定
         yes | buildozer -v --debug android debug
 
     - name: Upload artifacts
