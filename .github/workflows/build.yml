@@ -30,23 +30,12 @@ jobs:
         pip install --upgrade setuptools
         pip install buildozer==1.5.0 cython==0.29.36
 
-    - name: Force Android SDK Licenses
-      run: |
-        # Android SDKのライセンスフォルダを事前に強制作成し、同意済みハッシュを書き込む
-        mkdir -p $HOME/.android
-        echo "24333f8a43b682417157bc84b9e28f323719003d" > $HOME/.android/repositories.cfg
-        
-        # プレハブのライセンス承認ファイルを生成
-        SDK_LICENSES="$HOME/.buildozer/android/platform/android-sdk/licenses"
-        mkdir -p "$SDK_LICENSES"
-        # Android SDKの主要なライセンスハッシュを書き込む
-        echo "84831b8509b265738ab1d925828658161aefb4d0" > "$SDK_LICENSES"/android-sdk-license
-        echo "24333f8a43b682417157bc84b9e28f323719003d" > "$SDK_LICENSES"/android-sdk-preview-license
-
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
-        buildozer -v --debug android debug
+        
+        # コマンドラインから非対話モードでsdkmanagerのライセンスに自動同意させる環境変数を設定
+        yes | buildozer -v --debug android debug
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
