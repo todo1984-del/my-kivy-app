@@ -30,18 +30,26 @@ jobs:
         pip install --upgrade setuptools
         pip install buildozer cython==0.29.36
 
-    - name: Fix python-for-android pip upgrade issue
-      run: |
-        # python-for-android が内部で勝手に 'pip install -U pip' を行う部分を無効化（ダミー化）する
-        P4A_DIR=$(python -c "import pythonforandroid; import os; print(os.path.dirname(pythonforandroid.__file__))" 2>/dev/null || echo "")
-        # もしくはbuildozer内のrecipeやtoolchainを探してパッチを当てる
-        find ~/.buildozer -name "build.py" -o -name "toolchain.py" 2>/dev/null | xargs grep -l "pip install" || true
-
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
+        
         # 古いキャッシュをクリア
         rm -rf .buildozer
+        
+        # buildozerの実行前に、python-for-androidのソースを取得して pip install -U pip を無効化するパッチを当てるためのフック
+        # (buildozer初回実行時に自動クローンされる python-for-android のコードを書き換えるラッパーを設定)
+        mkdir -p ~/.local/bin
+        cat << 'EOF' > ~/.local/bin/pip-wrapper
+        # pip install -U pip が呼ばれたら何もしないで成功させる
+        if [[ "$*" == *"install"* && "$*" == *"-U"* && "$*" == *"pip"* ]]; then
+            echo "Intercepted pip upgrade, skipping to prevent compatibility error."
+            exit 0
+        fi
+        exec pip "$@"
+        EOF
+        chmod +x ~/.local/bin/pip-wrapper
+        
         buildozer -v --debug android debug
 
     - name: Upload artifacts
