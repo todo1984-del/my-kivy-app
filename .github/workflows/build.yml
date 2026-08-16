@@ -1,57 +1,6 @@
-name: Build Android App
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  build:
-    runs-on: ubuntu-22.04
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.9'
-
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev cmake libffi-dev libssl-dev gettext
-
-    - name: Setup Buildozer and Cython
+- name: Setup Buildozer and Cython
       run: |
         pip install --upgrade pip==24.0
         pip install --upgrade setuptools
-        pip install buildozer cython==0.29.36
-
-    - name: Build with Buildozer
-      run: |
-        export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
-
-        # 古いキャッシュをクリア
-        rm -rf .buildozer
-
-        # 初回ビルドを走らせて android-sdk フォルダ等の環境を強制生成させる（エラーになるので || true でスルー）
-        buildozer -v --debug android debug || true
-
-        # 生成された SDK 内の sdkmanager を使って、未承認のライセンスすべてに「yes」を自動入力する
-        SDK_DIR="$HOME/.buildozer/android/platform/android-sdk"
-        if [ -d "$SDK_DIR" ]; then
-          yes | "$SDK_DIR"/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          yes | "$SDK_DIR"/tools/bin/sdkmanager --licenses || true
-        fi
-
-        # 本番ビルドを実行
-        buildozer -v --debug android debug
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: my-app-apk
-        path: bin/*.apk
+        # Buildozerのバージョンを安定している 1.5.0 に固定する
+        pip install buildozer==1.5.0 cython==0.29.36
