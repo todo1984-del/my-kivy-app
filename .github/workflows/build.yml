@@ -37,19 +37,17 @@ jobs:
         # 古いキャッシュをクリア
         rm -rf .buildozer
         
-        # buildozerの実行前に、python-for-androidのソースを取得して pip install -U pip を無効化するパッチを当てるためのフック
-        # (buildozer初回実行時に自動クローンされる python-for-android のコードを書き換えるラッパーを設定)
-        mkdir -p ~/.local/bin
-        cat << 'EOF' > ~/.local/bin/pip-wrapper
-        # pip install -U pip が呼ばれたら何もしないで成功させる
-        if [[ "$*" == *"install"* && "$*" == *"-U"* && "$*" == *"pip"* ]]; then
-            echo "Intercepted pip upgrade, skipping to prevent compatibility error."
-            exit 0
-        fi
-        exec pip "$@"
-        EOF
-        chmod +x ~/.local/bin/pip-wrapper
+        # ビルド実行前に、python-for-androidのビルドスクリプトから 'pip install -U pip' を消去するパッチを当てるためのバックグラウンド監視または事後パッチ
+        # まず一度デバッグ用にビルドを回し、自動取得された p4a のコード内の pip upgrade を置換する
         
+        # あらかじめビルドを走らせて .buildozer 内に p4a をクローンさせる（失敗するので || true で受ける）
+        buildozer --version || true
+        
+        # .buildozer 内に展開された python-for-android の build.py から問題の行を強制削除
+        find .buildozer -name "build.py" -type f -exec sed -i 's/pip install -U pip/echo "Skipped pip upgrade"/g' {} + || true
+        find ~/.buildozer -name "build.py" -type f -exec sed -i 's/pip install -U pip/echo "Skipped pip upgrade"/g' {} + || true
+
+        # 本番ビルド実行
         buildozer -v --debug android debug
 
     - name: Upload artifacts
