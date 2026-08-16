@@ -37,25 +37,17 @@ jobs:
         # 古いキャッシュをクリア
         rm -rf .buildozer
 
-        # あらかじめ一度ビルドを走らせて .buildozer 内に p4a をクローンさせる（失敗するので || true で受ける）
-        buildozer --version || true
-
-        # SDKライセンスを強制的に承認させるファイルを作成するハック
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        
-        # 失敗するダミービルドを1回実行して android-sdk ディレクトリを生成させる
+        # 初回ビルドを走らせて android-sdk フォルダ等の環境を強制生成させる（エラーになるので || true でスルー）
         buildozer -v --debug android debug || true
 
-        # 生成された android-sdk に対して yes | sdkmanager --licenses を実行してライセンスを自動承認する
-        if [ -d "$HOME/.buildozer/android/platform/android-sdk/tools/bin" ]; then
-          yes | $HOME/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager --licenses || true
-        fi
-        if [ -d "$HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin" ]; then
-          yes | $HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        # 生成された SDK 内の sdkmanager を使って、未承認のライセンスすべてに「yes」を自動入力する
+        SDK_DIR="$HOME/.buildozer/android/platform/android-sdk"
+        if [ -d "$SDK_DIR" ]; then
+          yes | "$SDK_DIR"/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          yes | "$SDK_DIR"/tools/bin/sdkmanager --licenses || true
         fi
 
-        # 本番ビルド実行
+        # 本番ビルドを実行
         buildozer -v --debug android debug
 
     - name: Upload artifacts
