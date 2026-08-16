@@ -18,7 +18,7 @@ source.include_exts = py,png,jpg,kv,atlas
 # (list) List of inclusions using pattern
 #source.include_patterns = assets/*.png,images/*.jpg
 
-# (list) Source files to exclude (let it empty to exclude all files)
+# (list) Source files to exclude (let it empty to include all files)
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let it empty to exclude all files)
@@ -53,13 +53,13 @@ orientation = portrait
 #
 
 # (int) Target Android API, should be as high as possible.
-android.api = 34
+android.api = 31
 
 # (int) Minimum API your APK will support.
 android.min_api = 21
 
 # (str) Android NDK version to use
-android.ndk = 28c
+android.ndk = 25b
 
 # (bool) Indicate if the application should be background service or not
 #android.service = False
