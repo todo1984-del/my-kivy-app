@@ -1,3 +1,5 @@
+[app]
+
 # (str) Title of your application
 title = My Kivy App
 
@@ -26,7 +28,6 @@ source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 
 # (list) Application requirements
-# Specify dependencies without strict pinning to avoid distribution mismatch errors
 requirements = python3,kivy,pyjnius
 
 # (list) Custom source folders for requirements
