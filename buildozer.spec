@@ -53,7 +53,7 @@ orientation = portrait
 #
 
 # (int) Target Android API, should be as high as possible.
-android.api = 31
+android.api = 30
 
 # (int) Minimum API your APK will support.
 android.min_api = 21
@@ -65,7 +65,7 @@ android.ndk = 25b
 #android.sdk = 31
 
 # (str) android app build tools version
-android.build_tools_version = 33.0.2
+android.build_tools_version = 30.0.3
 
 # (bool) Indicate if the application should be background service or not
 #android.service = False
