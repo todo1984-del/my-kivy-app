@@ -70,4 +70,4 @@ android.build_tools_version = 30.0.3
 # (bool) Indicate if the application should be background service or not
 #android.service = False
 # (str) python-for-android branch to use, defaults to master
-p4a.branch = master
+#p4a.branch = master
