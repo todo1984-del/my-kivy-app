@@ -14,10 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.9
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
@@ -28,7 +28,6 @@ jobs:
       run: |
         pip install --upgrade pip==24.0
         pip install --upgrade setuptools
-        # 最新の master からビルドツールを入れ、バージョン誤認バグを回避する
         pip install --upgrade git+https://github.com/kivy/buildozer.git
         pip install cython==0.29.36
 
