@@ -9,6 +9,9 @@ package.name = kivyapp
 # (str) Package domain (needed for android packaging)
 package.domain = org.kivy
 
+# (str) Source directory where the main.py file lives
+source.dir = .
+
 # (list) Source files to include (let it empty to include all files)
 source.include_exts = py,png,jpg,kv,atlas
 
