@@ -1,14 +1,14 @@
-name: Build Android App
+name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
@@ -21,27 +21,16 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev cmake libffi-dev libssl-dev gettext
-
-    - name: Setup Buildozer and Cython
-      run: |
-        pip install --upgrade pip==24.0
-        pip install --upgrade setuptools
-        pip install --upgrade git+https://github.com/kivy/buildozer.git
-        pip install cython==0.29.36
-
-    - name: Clear old build cache
-      run: |
-        rm -rf .buildozer bin
+        python -m pip install --upgrade pip
+        pip install --upgrade buildozer cython
 
     - name: Build with Buildozer
-      run: |
-        export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
-        yes | buildozer -v --debug android debug
+      uses: ArtemSBulgakov/buildozer-action@v1
+      with:
+        command: buildozer -v android debug
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: my-app-apk
+        name: package
         path: bin/*.apk
