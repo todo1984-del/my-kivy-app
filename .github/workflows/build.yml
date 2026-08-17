@@ -31,6 +31,10 @@ jobs:
         pip install --upgrade git+https://github.com/kivy/buildozer.git
         pip install cython==0.29.36
 
+    - name: Clear old build cache
+      run: |
+        rm -rf .buildozer bin
+
     - name: Build with Buildozer
       run: |
         export BUILDOZER_ALLOW_DEPRECATED_PYTHON=1
