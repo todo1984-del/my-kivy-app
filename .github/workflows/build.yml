@@ -28,7 +28,9 @@ jobs:
       run: |
         pip install --upgrade pip==24.0
         pip install --upgrade setuptools
-        pip install buildozer==1.5.0 cython==0.29.36
+        # 最新の master からビルドツールを入れ、バージョン誤認バグを回避する
+        pip install --upgrade git+https://github.com/kivy/buildozer.git
+        pip install cython==0.29.36
 
     - name: Build with Buildozer
       run: |
